@@ -3,8 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import actions from "../../../states/Orders/actions";
 
-import OrdersTab from "../../../page/Vendor"
-import { Order } from '../../../types';
+import OrdersTab from "../../../page/Usbcopy"
 
 function OrdersList() {
 

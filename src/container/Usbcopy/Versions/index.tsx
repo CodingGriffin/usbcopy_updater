@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useOutletContext, useParams } from 'react-router-dom';
-import Versions from '../../../page/Vendor/Versions';
+import Versions from '../../../page/Usbcopy/Versions';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { STEP_STATUS } from '../../../types';
