@@ -2,13 +2,11 @@ import { all, call, put } from "redux-saga/effects";
 import { notification } from "antd";
 
 import ordersSaga from "./Orders/saga";
-import contactsSaga from "./Contacts/saga";
 
 // Here you can include all the saga which you write for components
 export default function* rootSaga() {
   yield all([
     ordersSaga(),
-    contactsSaga(),
   ]);
 }
 
