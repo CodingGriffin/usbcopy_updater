@@ -14,12 +14,6 @@ function HubPage() {
     return false;
   });
 
-  const {
-    order,
-    loading,
-    error,
-  } = useSelector((state: any) => state.orders);
-
   // Get entity_name from order
 
   useEffect(() => {
