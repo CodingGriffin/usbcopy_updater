@@ -54,7 +54,7 @@ function OrdersList({orders, setSelectedOrder}: OrdersListProps) {
                   Status
                 </th>
                 <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-gray-100">
-                  In-Hands Date
+                  Last Updated Date
                 </th>
                 <th scope="col" className="relative py-3.5 pl-3 pr-4 sm:pr-6">
                   <span className="sr-only">View</span>
@@ -73,19 +73,19 @@ function OrdersList({orders, setSelectedOrder}: OrdersListProps) {
                   </td>
                   <td className="whitespace-nowrap px-3 py-4 text-sm">
                     <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
-                      order.job_status  === 'completed'
+                      order.usbcopy_updates.length > 0
                         ? 'bg-green-100 text-green-800 dark:bg-green-800 dark:text-green-100'
-                        : order.job_status === 'on-hold'
-                        ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-800 dark:text-yellow-100'
+                        // : order.job_status === 'on-hold'
+                        // ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-800 dark:text-yellow-100'
                         : 'bg-blue-100 text-blue-800 dark:bg-blue-800 dark:text-blue-100'
                     }`}>
-                      {order.job_status.charAt(0).toUpperCase() + order.job_status.slice(1)}
+                      {order.usbcopy_updates.length > 0 ? 'Updated' : 'No Updated'}
                     </span>
                   </td>
                   <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 dark:text-gray-400">
                     <div className="flex items-center">
                       <Clock className="h-4 w-4 mr-1" />
-                      {dayjs(order.d).format('MM/DD/YYYY')}
+                      {order.usbcopy_updates.length > 0 ? dayjs(order.usbcopy_updates[order.usbcopy_updates.length - 1]?.timestamp).format('MM/DD/YYYY') : ''}
                     </div>
                   </td>
                   <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium">
