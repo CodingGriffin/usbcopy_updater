@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { ArrowLeft, Truck, Package, Palette, Database, ChevronDown, ChevronRight } from 'lucide-react';
 import { useNavigate, Outlet } from 'react-router-dom';
+import UpdatesTable from './UpdatesTable';
 
 interface OrdersDetailProps {
   selectedOrderData: any | null;
@@ -10,27 +11,7 @@ function OrdersDetail({selectedOrderData}: OrdersDetailProps) {
   const navigate = useNavigate();
   
   const [expandedVersions, setExpandedVersions] = useState<Record<string, boolean>>({});
-  const [selectedSection, setSelectedSection] = useState<'packaging' | 'artwork' | 'data' | 'bulk' | 'shipments' | null>(null);
-  const [selectedStep, setSelectedStep] = useState<number>(1);
-
-  // Helper function to check if section exists for a version
-  const sectionExistsForVersion = (version: any, sectionType: string) => {
-    return selectedOrderData.pad_line_items.some(
-      (item: any) => 
-        item.versions_id === version.version_id && 
-        item.pad_abbreviation === sectionType
-    ) || version.ref_pad_line_items?.some(
-      (item: any) => item.pad_abbreviation === sectionType
-    );
-  };
-
-  // Map section names to pad_abbreviation values
-  const sectionToPadMap = {
-    'packaging': 'pack',
-    'artwork': 'artw',
-    'data': 'data',
-    'bulk': 'bulk'
-  };
+  const [selectedSection, setSelectedSection] = useState<'Window' | 'Mac' | null>('Window');
 
   // Simulating data fetch - replace with actual API call
 
@@ -60,19 +41,9 @@ function OrdersDetail({selectedOrderData}: OrdersDetailProps) {
     }
   };
 
-  const chooseSection = async (section: 'packaging' | 'artwork' | 'data' | 'bulk' | 'shipments' | null, version_id: number) => {
-    if (section == 'bulk') {
-      navigate(`../${selectedOrderData?.job?.job_number}/${version_id}/${section}`);
-    } else {
-      navigate(`../${selectedOrderData?.job?.job_number}/${version_id}/${section}/files`);
-    }
+  const chooseSection = async (section: 'Window' | 'Mac' | null, version_id: number) => {
     setSelectedSection(section);
-    setSelectedStep(1);
   };
-
-  const shipments = async () => {
-    navigate(`../${selectedOrderData?.job?.job_number}/shipments`);
-  }
 
   const getSectionIcon = (section: string) => {
     switch (section) {
@@ -106,18 +77,6 @@ function OrdersDetail({selectedOrderData}: OrdersDetailProps) {
         </div>
 
         <div className="py-2 space-y-2">
-          <button
-            onClick={() => shipments()}
-            className={`w-full text-left px-4 py-2 flex items-center space-x-2 ${
-              selectedSection === 'shipments'
-                ? 'bg-blue-50 dark:bg-blue-900 text-blue-600 dark:text-blue-300'
-                : 'hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300'
-            }`}
-          >
-            <Truck className="w-5 h-5" />
-            <span>Shipments</span>
-          </button>
-
           {selectedOrderData?.versions?.map((version: any, index: number) => (
           <>
             <button
@@ -138,15 +97,11 @@ function OrdersDetail({selectedOrderData}: OrdersDetailProps) {
 
             {expandedVersions[index] && (
               <div className="pl-4">
-                {['packaging', 'artwork', 'data', 'bulk'].map((section) => {
-                  const padAbbreviation = sectionToPadMap[section as keyof typeof sectionToPadMap];
-                  
-                  // Only render the section button if it exists in pad_line_items
-                  if (sectionExistsForVersion(version, padAbbreviation)) {
+                {['Window', 'Mac'].map((section) => {
                     return (
                       <button
                         key={`${version.version_id}-${section}`}
-                        onClick={() => chooseSection(section as 'packaging' | 'artwork' | 'data' | 'bulk', version.version_id)}
+                        onClick={() => chooseSection(section as 'Window' | 'Mac', version.version_id)}
                         className={`w-full text-left px-4 py-2 flex items-center space-x-2 ${
                           selectedSection === section
                             ? 'bg-blue-50 dark:bg-blue-900 text-blue-600 dark:text-blue-300'
@@ -154,11 +109,9 @@ function OrdersDetail({selectedOrderData}: OrdersDetailProps) {
                         }`}
                       >
                         {getSectionIcon(section)}
-                        <span className="capitalize">{section == 'bulk' ? 'bulk packing' : section}</span>
+                        <span className="capitalize">{section}</span>
                       </button>
                     );
-                  }
-                  return null;
                 })}
               </div>
             )}
@@ -168,7 +121,14 @@ function OrdersDetail({selectedOrderData}: OrdersDetailProps) {
       </div>
 
       <div className="flex-1 overflow-y-auto">
-        <Outlet context={{ selectedOrderData, selectedSection, selectedStep, setSelectedStep }} />
+        <Outlet context={{ selectedOrderData, selectedSection }} />
+        {/* <h1>Hello</h1> */}
+        {/* <Outlet context={{ selectedOrderData }} /> */}
+        {selectedOrderData.usbcopy_updates && selectedOrderData.usbcopy_updates.length > 0 && (
+          <div className="mb-4 ms-4 border-b border-gray-200 dark:border-gray-700 pb-4">
+            <UpdatesTable updates={selectedOrderData.usbcopy_updates} section={selectedSection} />
+          </div>
+        )}
       </div>
     </div>
   );
