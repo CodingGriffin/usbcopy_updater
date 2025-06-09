@@ -17,7 +17,18 @@ function OrdersList({orders, setSelectedOrder}: OrdersListProps) {
 
   useEffect(() => {
     // Update filtered orders whenever orders prop changes
-    setFilteredOrders(orders.filter((order: any) => order.vendorPo === true));
+    setFilteredOrders(
+      orders.filter((order: any) => {
+        // First filter for vendorPo
+        if (order.vendorPo !== true) return false;
+        
+        // Then check if any version has pad_id of 5
+        if (!order.versions || !Array.isArray(order.versions)) return false;
+        
+        // Return true if at least one version has pad_id of 5
+        return order.versions.some((version: any) => version.pad_id === 5);
+      })
+    );
   }, [orders]);
   
   const handleSearch = (filterValue: string) => {

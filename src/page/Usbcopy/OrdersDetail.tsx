@@ -37,7 +37,7 @@ function OrdersDetail({selectedOrderData}: OrdersDetailProps) {
     
     // Reset selected section when closing
     if (!expandedVersions[version]) {
-      setSelectedSection(null);
+      // setSelectedSection(null);
     }
   };
 
@@ -77,7 +77,11 @@ function OrdersDetail({selectedOrderData}: OrdersDetailProps) {
         </div>
 
         <div className="py-2 space-y-2">
-          {selectedOrderData?.versions?.map((version: any, index: number) => (
+          {selectedOrderData?.versions?.filter((version: any) => 
+              selectedOrderData.pad_line_items.some((padLineItem: any) => 
+                  padLineItem.versions_id === version.version_id && padLineItem.pad_abbreviation === 'copy'
+              )
+          ).map((version: any, index: number) => (
           <>
             <button
               key={`${version.version_id}`}
@@ -126,6 +130,7 @@ function OrdersDetail({selectedOrderData}: OrdersDetailProps) {
         {/* <Outlet context={{ selectedOrderData }} /> */}
         {selectedOrderData.usbcopy_updates && selectedOrderData.usbcopy_updates.length > 0 && (
           <div className="mb-4 ms-4 border-b border-gray-200 dark:border-gray-700 pb-4">
+            {/* <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">Updates</h3> */}
             <UpdatesTable updates={selectedOrderData.usbcopy_updates} section={selectedSection} />
           </div>
         )}
