@@ -9,6 +9,24 @@ const initialState = {
 
 function Reducer(state = initialState, action: any) {
   switch (action.type) {
+    case actions.GET_UPDATES:
+      return {
+        ...state,
+        loading: true,
+        error: null,
+      };
+    case actions.GET_UPDATES_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        updates: action.payload,
+      };
+    case actions.GET_UPDATES_FAILURE:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload
+      };
     case actions.ADD_UPDATE:
       return {
         ...state,
@@ -27,19 +45,19 @@ function Reducer(state = initialState, action: any) {
         loading: false,
         error: action.payload
       };
-    case actions.GET_UPDATES:
+    case actions.DELETE_UPDATE:
       return {
         ...state,
         loading: true,
         error: null,
       };
-    case actions.GET_UPDATES_SUCCESS:
+    case actions.DELETE_UPDATE_SUCCESS:
       return {
         ...state,
         loading: false,
         updates: action.payload,
       };
-    case actions.GET_UPDATES_FAILURE:
+    case actions.DELETE_UPDATE_FAILURE:
       return {
         ...state,
         loading: false,
