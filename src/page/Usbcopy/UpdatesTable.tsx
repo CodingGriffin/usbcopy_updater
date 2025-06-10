@@ -36,7 +36,7 @@ function UpdatesTable({ updates, section, versionNum, deleteUpdate }: UpdatesTab
 
   const handleDeleteUpdate = (id: any, name: string) => {
     Modal.confirm({
-      title: 'Delete Photo Sample',
+      title: 'Delete Version',
       content: `Are you sure you want to delete "${name}"? This action cannot be undone.`,
       okText: 'Yes, Delete',
       cancelText: 'No, Cancel',
