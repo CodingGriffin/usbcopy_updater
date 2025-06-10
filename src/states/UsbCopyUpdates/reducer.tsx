@@ -19,6 +19,7 @@ function Reducer(state = initialState, action: any) {
       return {
         ...state,
         loading: false,
+        updates: action.payload,
       };
     case actions.ADD_UPDATE_FAILURE:
       return {

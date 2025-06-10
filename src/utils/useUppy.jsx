@@ -116,9 +116,9 @@ export default function useUppy() {
           console.error('Response:', response);
         };
 
-        const completeHandler = (result) => {
+        const completeHandler = async(result) => {
 
-          dispatch({
+          await dispatch({
             type: actions.ADD_UPDATE,
             payload: {
               mode: "insertUpdates",
@@ -126,6 +126,16 @@ export default function useUppy() {
               ver_num: verNum,
               os_type: osType,
               file_url: file_url,
+            }
+          });
+
+          await dispatch({
+            type: actions.GET_UPDATES,
+            payload: {
+              mode: "getUpdates",
+              job_num: job?.job_number,
+              ver_num: verNum,
+              os_type: osType,
             }
           });
           console.log('Upload complete! We have uploaded these files:', result);

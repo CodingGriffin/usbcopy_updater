@@ -35,14 +35,17 @@ function UpdatesTable({ updates, section, versionNum }: UpdatesTableProps) {
   if (!filteredUpdates || filteredUpdates.length === 0) {
     return (
       <>
-        <button 
-          onClick={() => setShowUploadModal(true)}
-          className="flex items-center px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm"
-        >
-          <Upload className="w-4 h-4 mr-1.5" />
-          <span>Upload</span>
-        </button>
-        <div className="p-4 text-gray-500">No updates available for this section</div>
+
+        <div className="flex p-4 text-gray-500">
+          No updates available for this section
+          <button 
+            onClick={() => setShowUploadModal(true)}
+            className="flex items-center ms-5 px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm"
+          >
+            <Upload className="w-4 h-4 mr-1.5" />
+            <span>Upload</span>
+          </button>
+        </div>
         {showUploadModal && <UploadModal _closeUploadModal={handleCloseWUploadModal} />}
       </>
     )
@@ -50,24 +53,27 @@ function UpdatesTable({ updates, section, versionNum }: UpdatesTableProps) {
 
   return (
     <div className="overflow-hidden bg-white dark:bg-gray-800 shadow ring-1 ring-black ring-opacity-5 rounded-lg">
-        <button 
-          onClick={() => setShowUploadModal(true)}
-          className="flex items-center px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm"
-        >
-          <Upload className="w-4 h-4 mr-1.5" />
-          <span>Upload</span>
-        </button>
+
       <table className="min-w-full divide-y divide-gray-300 dark:divide-gray-700">
         <thead>
           <tr>
-            <th scope="col" className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 dark:text-gray-100">
+            <th scope="col-2" className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 dark:text-gray-100">
               File
             </th>
-            <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-gray-100">
+            <th scope="col-2" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-gray-100">
               Status
             </th>
-            <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-gray-100">
+            <th scope="col-5" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-gray-100">
               Last Updated
+            </th>
+            <th scope="col-1" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-gray-100">
+              <button 
+                onClick={() => setShowUploadModal(true)}
+                className="flex items-center px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm"
+              >
+                <Upload className="w-4 h-4 mr-1.5" />
+                <span>Upload</span>
+              </button>
             </th>
           </tr>
         </thead>
@@ -76,12 +82,12 @@ function UpdatesTable({ updates, section, versionNum }: UpdatesTableProps) {
             <tr key={index} className="hover:bg-gray-50 dark:hover:bg-gray-700">
               <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 dark:text-gray-100">
                 <a 
-                  href={`${host}${update.files?.file_path}`} 
+                  href={`${update.file_url}`} 
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300"
                 >
-                  {getFileName(update.files?.file_path)}
+                  {getFileName(update.file_url)}
                 </a>
               </td>
               <td className="whitespace-nowrap px-3 py-4 text-sm">
