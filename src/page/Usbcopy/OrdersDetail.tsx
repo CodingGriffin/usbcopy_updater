@@ -47,6 +47,24 @@ function OrdersDetail({selectedOrderData}: OrdersDetailProps) {
     });
   }
 
+  const deleteUpdate = (id: any) => {
+    const url = new URL(window.location.href);
+    
+    // Set or update the query parameter
+    const verNum = url.searchParams.get('ver_num');
+    const osType = url.searchParams.get('os_type');
+
+    dispatch({
+      type: actions.GET_UPDATES,
+      payload: {
+        mode: "deleteUpdate",
+        id: id,
+        job_num: selectedOrderData?.job?.job_number,
+        ver_num: verNum,
+        os_type: osType,
+      }
+    });
+  }
 
   const resetView = () => {
     navigate('../');
@@ -182,7 +200,7 @@ function OrdersDetail({selectedOrderData}: OrdersDetailProps) {
         {/* <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">Updates</h3> */}
 
         <div className="mb-4 ms-4 border-b border-gray-200 dark:border-gray-700 pb-4">
-          <UpdatesTable updates={updates.data} section={selectedSection} versionNum={selectedVersionNum} />
+          <UpdatesTable updates={updates.data} section={selectedSection} versionNum={selectedVersionNum} deleteUpdate={deleteUpdate} />
         </div>
       </div>
     </div>

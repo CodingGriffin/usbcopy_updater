@@ -1,15 +1,17 @@
 import React, { useCallback, useState } from 'react';
 import dayjs from 'dayjs';
+import { Modal } from 'antd';
+import { Upload, Trash2 } from 'lucide-react';
 import UploadModal from './UploadModal';
-import { Upload } from 'lucide-react';
 
 interface UpdatesTableProps {
   updates: any[];
   section: string | null;
   versionNum: Number;
+  deleteUpdate: (id: any) => void;
 }
 
-function UpdatesTable({ updates, section, versionNum }: UpdatesTableProps) {
+function UpdatesTable({ updates, section, versionNum, deleteUpdate }: UpdatesTableProps) {
   // Filter updates where os_type matches section
   const [showUploadModal, setShowUploadModal] = useState(false);
   const url = new URL(window.location.href);
@@ -31,6 +33,24 @@ function UpdatesTable({ updates, section, versionNum }: UpdatesTableProps) {
   const handleCloseWUploadModal = useCallback(() => {
     setShowUploadModal(false);
   }, []);
+
+  const handleDeleteUpdate = (id: any, name: string) => {
+    Modal.confirm({
+      title: 'Delete Photo Sample',
+      content: `Are you sure you want to delete "${name}"? This action cannot be undone.`,
+      okText: 'Yes, Delete',
+      cancelText: 'No, Cancel',
+      okButtonProps: {
+        className: 'bg-red-600 hover:bg-red-700',
+      },
+      onOk() {
+        deleteUpdate(id);
+      },
+      onCancel() {
+        console.log('Delete cancelled');
+      }
+    });
+  };
 
   if (!filteredUpdates || filteredUpdates.length === 0) {
     return (
@@ -66,6 +86,9 @@ function UpdatesTable({ updates, section, versionNum }: UpdatesTableProps) {
             <th scope="col-5" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-gray-100">
               Last Updated
             </th>
+            <th scope="col-5" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-gray-100">
+              Action
+            </th>
             <th scope="col-1" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-gray-100">
               <button 
                 onClick={() => setShowUploadModal(true)}
@@ -97,6 +120,14 @@ function UpdatesTable({ updates, section, versionNum }: UpdatesTableProps) {
               </td>
               <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 dark:text-gray-400">
                 {dayjs(update.timestamp).format('MM/DD/YYYY HH:mm')}
+              </td>
+              <td className="whitespace-nowrap px-3 py-4 text-sm">
+                <button
+                  onClick={() => handleDeleteUpdate(update.id, getFileName(update.file_url))}
+                  className=" px-4 py-2 rounded-md bg-red-600 hover:bg-red-700 text-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-600 transition-all duration-200 flex items-center gap-1"
+                >
+                  <Trash2 size={16} />
+                </button>
               </td>
             </tr>
           ))}
