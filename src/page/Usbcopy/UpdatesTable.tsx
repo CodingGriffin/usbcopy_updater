@@ -1,29 +1,62 @@
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 import dayjs from 'dayjs';
+import UploadModal from './UploadModal';
+import { Upload } from 'lucide-react';
 
 interface UpdatesTableProps {
   updates: any[];
   section: string | null;
+  versionNum: Number;
 }
 
-function UpdatesTable({ updates, section }: UpdatesTableProps) {
+function UpdatesTable({ updates, section, versionNum }: UpdatesTableProps) {
   // Filter updates where os_type matches section
+  const [showUploadModal, setShowUploadModal] = useState(false);
+  const url = new URL(window.location.href);
+    
+    // Use URLSearchParams to get the parameter value
+  console.log(url.searchParams.get('os_type'));
+  console.log(url.searchParams.get('ver_num'));
   const filteredUpdates = section 
-    ? updates.filter(update => update.os_type === section)
+    ? updates?.filter(update => update.os_type === section)
     : updates;
 
-  if (!filteredUpdates || filteredUpdates.length === 0) {
-    return <div className="p-4 text-gray-500">No updates available for this section</div>;
-  }
   const host = import.meta.env.VITE_SERVER_BASE_URL;
   const liveHost = `${window.location.protocol}//${window.location.host}/`;
 
   const getFileName = (filePath: string) => {
     return filePath.split('/').pop() || filePath;
   };
+  
+  const handleCloseWUploadModal = useCallback(() => {
+    setShowUploadModal(false);
+  }, []);
+
+  if (!filteredUpdates || filteredUpdates.length === 0) {
+    return (
+      <>
+        <button 
+          onClick={() => setShowUploadModal(true)}
+          className="flex items-center px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm"
+        >
+          <Upload className="w-4 h-4 mr-1.5" />
+          <span>Upload</span>
+        </button>
+        <div className="p-4 text-gray-500">No updates available for this section</div>
+        {showUploadModal && <UploadModal _closeUploadModal={handleCloseWUploadModal} />}
+      </>
+    )
+  }
 
   return (
     <div className="overflow-hidden bg-white dark:bg-gray-800 shadow ring-1 ring-black ring-opacity-5 rounded-lg">
+        <button 
+          onClick={() => setShowUploadModal(true)}
+          className="flex items-center px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm"
+        >
+          <Upload className="w-4 h-4 mr-1.5" />
+          <span>Upload</span>
+        </button>
       <table className="min-w-full divide-y divide-gray-300 dark:divide-gray-700">
         <thead>
           <tr>
@@ -63,6 +96,7 @@ function UpdatesTable({ updates, section }: UpdatesTableProps) {
           ))}
         </tbody>
       </table>
+      {showUploadModal && <UploadModal _closeUploadModal={handleCloseWUploadModal} />}
     </div>
   );
 }

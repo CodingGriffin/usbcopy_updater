@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { ArrowLeft, Truck, Package, Palette, Database, ChevronDown, ChevronRight } from 'lucide-react';
+import { useCallback, useState } from 'react';
+import { ArrowLeft, Truck, Package, Palette, Database, ChevronDown, ChevronRight, Upload } from 'lucide-react';
 import { useNavigate, Outlet } from 'react-router-dom';
 import UpdatesTable from './UpdatesTable';
 
@@ -12,8 +12,10 @@ function OrdersDetail({selectedOrderData}: OrdersDetailProps) {
   
   const [expandedVersions, setExpandedVersions] = useState<Record<string, boolean>>({});
   const [selectedSection, setSelectedSection] = useState<'Window' | 'Mac' | null>('Window');
+  const [selectedVersionNum, setSelectedVersionNum] = useState(1);
 
   // Simulating data fetch - replace with actual API call
+
 
 
   const resetView = () => {
@@ -42,7 +44,16 @@ function OrdersDetail({selectedOrderData}: OrdersDetailProps) {
   };
 
   const chooseSection = async (section: 'Window' | 'Mac' | null, version_id: number) => {
+    const url = new URL(window.location.href);
+    
+    // Set or update the query parameter
+    url.searchParams.set('ver_num', String(version_id+1));
+    url.searchParams.set('os_type', String(section));
+    
+    // Update the URL in the browser's address bar without reloading the page
+    window.history.pushState({}, '', url);
     setSelectedSection(section);
+    setSelectedVersionNum(version_id);
   };
 
   const getSectionIcon = (section: string) => {
@@ -105,7 +116,7 @@ function OrdersDetail({selectedOrderData}: OrdersDetailProps) {
                     return (
                       <button
                         key={`${version.version_id}-${section}`}
-                        onClick={() => chooseSection(section as 'Window' | 'Mac', version.version_id)}
+                        onClick={() => chooseSection(section as 'Window' | 'Mac', index)}
                         className={`w-full text-left px-4 py-2 flex items-center space-x-2 ${
                           selectedSection === section
                             ? 'bg-blue-50 dark:bg-blue-900 text-blue-600 dark:text-blue-300'
@@ -128,12 +139,11 @@ function OrdersDetail({selectedOrderData}: OrdersDetailProps) {
         <Outlet context={{ selectedOrderData, selectedSection }} />
         {/* <h1>Hello</h1> */}
         {/* <Outlet context={{ selectedOrderData }} /> */}
-        {selectedOrderData.usbcopy_updates && selectedOrderData.usbcopy_updates.length > 0 && (
-          <div className="mb-4 ms-4 border-b border-gray-200 dark:border-gray-700 pb-4">
-            {/* <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">Updates</h3> */}
-            <UpdatesTable updates={selectedOrderData.usbcopy_updates} section={selectedSection} />
-          </div>
-        )}
+        {/* <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">Updates</h3> */}
+
+        <div className="mb-4 ms-4 border-b border-gray-200 dark:border-gray-700 pb-4">
+          <UpdatesTable updates={selectedOrderData.usbcopy_updates} section={selectedSection} versionNum={selectedVersionNum} />
+        </div>
       </div>
     </div>
   );

@@ -7,12 +7,13 @@ import Box from '@uppy/box';
 import OneDrive from '@uppy/onedrive';
 import GoogleDrive from '@uppy/google-drive';
 import Dropbox from '@uppy/dropbox';
-import actions from "../states/PhotoSamples/actions";
+
+import actions from "../states/UsbCopyUpdates/actions";
 
 import '@uppy/core/dist/style.min.css'
 import '@uppy/dashboard/dist/style.min.css'
 
-const endPoint= "https://everyusb.click/s3-uploads"
+const endPoint= "http://localhost:3000/usbcopypro-s3-uploads"
 const companionUrl = "http://localhost:3020/companion";
 
 function serializeSubPart(key, value) {
@@ -34,24 +35,20 @@ function serialize(data) {
 }
 
 export default function useUppy() {
-  const [files, setFiles] = useState([]);
-  const location = useLocation();
-  const queryParams = new URLSearchParams(location.search);
-  const dispatch = useDispatch();
-  const {orderId, version_id, section} = useParams();
   
-  // Get entity_name and version_name from Redux state
+  const [files, setFiles] = useState([]);
+  const dispatch = useDispatch();
   const { order } = useSelector((state) => state.orders);
   const entityName = order?.data?.entities?.[0]?.entity_name || '';
+  const job = order?.data?.job;
+  const url = new URL(window.location.href);
+    
+    // Use URLSearchParams to get the parameter value
+  const osType = url.searchParams.get('os_type');
+  const verNum = url.searchParams.get('ver_num');
+  // Get entity_name and version_name from Redux state
   
   // Find the version name that matches the current version_id
-  const versionName = order?.data?.versions?.find(
-    version => version.version_id === parseInt(version_id)
-  )?.version_name || '';
-
-  const versionNumber = order?.data?.versions?.find(
-    version => version.version_id === parseInt(version_id)
-  )?.version_number || '';
 
   const uppy = new Uppy({
     id: 'uppy',
@@ -90,103 +87,63 @@ export default function useUppy() {
       // .use(ScreenCapture)
 
       useEffect(() => {
-        let files = [];
-        const padType = section === 'data' ? 'data' : section === 'artwork' ? 'artw' : 'pack';
+        let file_url = "";
         const fileAddedHandler = (file) => {
           console.log("Added file name: ", file.name, file.meta.relativePath);
-          
-          // Replace spaces with underscores in filename, entityName and versionName
-          const sanitizedFileName = file.name.replace(/\s+/g, '_');
           const sanitizedEntityName = entityName.replace(/\s+/g, '_');
-          const sanitizedVersionName = versionName.replace(/\s+/g, '_');
-          
-          // Set metadata for the file
+          const sanitizedFileName = file.name.replace(/\s+/g, '_');
           uppy.setFileMeta(file.id, {
-            orderId: orderId,
-            versionName: sanitizedVersionName, // Use version_name instead of version_id
-            section: padType,
-            uploadBy: 'vendor',
-            type: 'samples',
-            relativePath: file.meta.relativePath,
+            entityName: sanitizedEntityName,
+            osType: osType,
+            verNum: verNum,
             filename: sanitizedFileName,
             filetype: file.type,
-            entityName: sanitizedEntityName
           });
         };
 
         const uploadSuccessHandler = (file, response) => {
           console.log('Upload successful:', file.name);
-          console.log('Tus response:', response);
-          const sanitizedFileName = file.name.replace(/\s+/g, '_');
+          console.log('Response:', response);
           const sanitizedEntityName = entityName.replace(/\s+/g, '_');
-          const sanitizedVersionName = versionName.replace(/\s+/g, '_');
-          
-          const fileUrl = response.uploadURL;
-          files.push({
-            name: file.name, 
-            file_path: `${sanitizedEntityName}/${orderId}/${sanitizedVersionName}/${padType}/samples/${sanitizedFileName}`,
-          });
-          console.log('File URL:', fileUrl);
-        };
-
-        const completeHandler = (result) => {
-          const successResults = result.successful;
-          const resource_id = queryParams.get('resource_id');
-          console.log("uploading completed============>", files);
-          
-          // Check if we're on vendor/*/samples route
-          const pathParts = location.pathname.split('/');
-          const isVendorRoute = pathParts[1] === 'vendor';
-          const isSamplesRoute = pathParts[pathParts.length - 1] === 'samples';
-          
-          if (isVendorRoute && version_id) {
-            dispatch({
-              type: actions.ADD_SAMPLES,
-              payload: {
-                mode: "insertSamples",
-                jobs_id: orderId, // Adjust this based on how you want to get the job number
-                versions_id: version_id,
-                resource_id: resource_id,
-                pads_type: padType,
-                files: files,
-                version_number: versionNumber
-              }
-            });
-
-            dispatch({
-              type: actions.GET_SAMPLES,
-              payload: {
-                mode: "getPhotoSamples",
-                jobs_id: orderId,
-                versions_id: version_id,
-                pads_type: padType,
-              }
-            });
-          }
-          
-          files = [];
+          const sanitizedFileName = file.name.replace(/\s+/g, '_');
+          file_url = `https://usbcopypro.s3.amazonaws.com/${sanitizedEntityName}/V${verNum}/${osType}/${sanitizedFileName}`;       
+          // const fileUrl = response.uploadURL;
+          // setFiles(prev => [...prev, {name: file.name, url: fileUrl}]);
         };
 
         const uploadErrorHandler = (file, error, response) => {
           console.error('Upload error:', file.name, error);
-          console.error('S3 response:', response);
+          console.error('Response:', response);
         };
-    
+
+        const completeHandler = (result) => {
+
+          dispatch({
+            type: actions.ADD_UPDATE,
+            payload: {
+              mode: "insertUpdates",
+              job_num: job?.job_number, // Adjust this based on how you want to get the job number
+              ver_num: verNum,
+              os_type: osType,
+              file_url: file_url,
+            }
+          });
+          console.log('Upload complete! We have uploaded these files:', result);
+        };
+
         uppy.on('file-added', fileAddedHandler);
-        // uppy.on('file-removed', fileRemovedHandler);
         uppy.on('upload-success', uploadSuccessHandler);
-        // uppy.on('upload-error', uploadErrorHandler);
+        uppy.on('upload-error', uploadErrorHandler);
         uppy.on('complete', completeHandler);
-    
+
         return () => {
-          uppy.off('upload-success', uploadSuccessHandler);
           uppy.off('file-added', fileAddedHandler);
-          // uppy.off('file-removed', fileRemovedHandler);
-          // uppy.off('upload-error', uploadErrorHandler);
+          uppy.off('upload-success', uploadSuccessHandler);
+          uppy.off('upload-error', uploadErrorHandler);
           uppy.off('complete', completeHandler);
           uppy.clear();
         };
-      }, [location, dispatch, version_id, section, entityName, versionName]); // Add versionName to dependencies
+      }, []); // Add versionName to dependencies
 
     return { uppy, files };
   // })
