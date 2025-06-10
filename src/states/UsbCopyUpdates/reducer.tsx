@@ -2,9 +2,6 @@ import actions from "./actions";
 
 const initialState = {
   updates: [],
-  order: {
-    data: null
-  },
   loading: false,
   error: null,
 };
@@ -22,9 +19,26 @@ function Reducer(state = initialState, action: any) {
       return {
         ...state,
         loading: false,
-        orders: action.payload,
       };
     case actions.ADD_UPDATE_FAILURE:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload
+      };
+    case actions.GET_UPDATES:
+      return {
+        ...state,
+        loading: true,
+        error: null,
+      };
+    case actions.GET_UPDATES_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        updates: action.payload,
+      };
+    case actions.GET_UPDATES_FAILURE:
       return {
         ...state,
         loading: false,
