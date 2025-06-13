@@ -61,6 +61,9 @@ function OrdersList({orders, setSelectedOrder}: OrdersListProps) {
                 <th scope="col" className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 dark:text-gray-100">
                   Order Number
                 </th>
+                <th scope="col" className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 dark:text-gray-100">
+                  Entity Name
+                </th>
                 <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-gray-100">
                   Status
                 </th>
@@ -81,6 +84,9 @@ function OrdersList({orders, setSelectedOrder}: OrdersListProps) {
                 >
                   <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 dark:text-gray-100">
                     {order.jobNumber}
+                  </td>
+                  <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 dark:text-gray-100">
+                    {order.e}
                   </td>
                   <td className="whitespace-nowrap px-3 py-4 text-sm">
                     <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
