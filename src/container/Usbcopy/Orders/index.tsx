@@ -22,6 +22,7 @@ function OrdersList() {
       payload: {
         jobStatus_exclude: '0',
         jobStatus_include: '2, 3',
+        padStatus_include: "5",
         sortby: "InHandsDate",
         order: "ASC",
         joblimit: 10000,
