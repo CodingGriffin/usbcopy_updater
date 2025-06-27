@@ -3,6 +3,7 @@ import dayjs from 'dayjs';
 import { Modal } from 'antd';
 import { Upload, Trash2 } from 'lucide-react';
 import UploadModal from './UploadModal';
+import TabNav from '../../component/TabNavComponent';
 
 interface UpdatesTableProps {
   updates: any[];
@@ -73,7 +74,7 @@ function UpdatesTable({ updates, section, versionNum, deleteUpdate }: UpdatesTab
 
   return (
     <div className="overflow-hidden bg-white dark:bg-gray-800 shadow ring-1 ring-black ring-opacity-5 rounded-lg">
-
+      <TabNav />
       <table className="min-w-full divide-y divide-gray-300 dark:divide-gray-700">
         <thead>
           <tr>
