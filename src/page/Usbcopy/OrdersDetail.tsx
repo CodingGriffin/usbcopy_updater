@@ -16,6 +16,7 @@ function OrdersDetail({selectedOrderData}: OrdersDetailProps) {
 
   const {
     updates,
+    diagnostics,
     loading,
     error,
   } = useSelector((state: any) => state.usbcopyUpdates);
@@ -29,6 +30,7 @@ function OrdersDetail({selectedOrderData}: OrdersDetailProps) {
 
   useEffect(() => {
     getUpdates();
+    getDiagnostics();
   }, []);
 
   const getUpdates = () => {
@@ -42,6 +44,24 @@ function OrdersDetail({selectedOrderData}: OrdersDetailProps) {
       type: actions.GET_UPDATES,
       payload: {
         mode: "getUpdates",
+        job_num: selectedOrderData?.job?.job_number,
+        ver_num: verNum,
+        os_type: osType,
+      }
+    });
+  }
+
+  const getDiagnostics = () => {
+    const url = new URL(window.location.href);
+    
+    // Set or update the query parameter
+    const verNum = url.searchParams.get('ver_num');
+    const osType = url.searchParams.get('os_type');
+
+    dispatch({
+      type: actions.GET_DIAGNOSTICS,
+      payload: {
+        mode: "getDiagnostics",
         job_num: selectedOrderData?.job?.job_number,
         ver_num: verNum,
         os_type: osType,
@@ -104,6 +124,16 @@ function OrdersDetail({selectedOrderData}: OrdersDetailProps) {
       type: actions.GET_UPDATES,
       payload: {
         mode: "getUpdates",
+        job_num: selectedOrderData?.job?.job_number,
+        ver_num: (version_id+1),
+        os_type: section,
+      }
+    });
+
+    dispatch({
+      type: actions.GET_DIAGNOSTICS,
+      payload: {
+        mode: "getDiagnostics",
         job_num: selectedOrderData?.job?.job_number,
         ver_num: (version_id+1),
         os_type: section,
