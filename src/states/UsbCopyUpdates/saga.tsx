@@ -38,8 +38,18 @@ function* deleteUpdate(action: any) {
   }
 }
 
+function* getDiagnostics(action: any) {
+  try {
+    const response: any = yield* callApi(postRequestNoToken, "j/inc/class/class.usbCopyPro.php", {...action.payload});
+    yield put({ type: actions.GET_DIAGNOSTICS_SUCCESS, payload: response });
+  } catch (error) {
+    yield put({ type: actions.GET_DIAGNOSTICS_FAILURE, payload: error });
+  }
+}
+
 export default function* rootSaga() {
   yield all([takeLatest(actions.GET_UPDATES, getUpdates)]);
   yield all([takeLatest(actions.ADD_UPDATE, addUpdate)]);
   yield all([takeLatest(actions.ADD_UPDATE, deleteUpdate)]);
+  yield all([takeLatest(actions.GET_DIAGNOSTICS, getDiagnostics)]);
 }

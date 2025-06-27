@@ -2,6 +2,7 @@ import actions from "./actions";
 
 const initialState = {
   updates: [],
+  diagnostics: [],
   loading: false,
   error: null,
 };
@@ -58,6 +59,24 @@ function Reducer(state = initialState, action: any) {
         updates: action.payload,
       };
     case actions.DELETE_UPDATE_FAILURE:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload
+      };
+    case actions.GET_DIAGNOSTICS:
+      return {
+        ...state,
+        loading: true,
+        error: null,
+      };
+    case actions.GET_DIAGNOSTICS_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        diagnostics: action.payload,
+      };
+    case actions.GET_DIAGNOSTICS_FAILURE:
       return {
         ...state,
         loading: false,

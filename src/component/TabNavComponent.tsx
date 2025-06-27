@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 import { Stethoscope, Rocket } from 'lucide-react';
 
-const TabNav = React.memo(() => {
-  const [activeTab, setActiveTab] = useState('versions');
+interface TabNavProps {
+  activeTab: any;
+  setActiveTab: (status: String) => void;
+}
 
+const TabNav = React.memo(({activeTab, setActiveTab}: TabNavProps) => {
   return (
     <div className="border-b border-gray-200 dark:border-gray-700">
       <nav className="flex -mb-px">

@@ -4,6 +4,7 @@ import { ArrowLeft, Truck, Package, Palette, Database, ChevronDown, ChevronRight
 import { useNavigate, Outlet } from 'react-router-dom';
 import actions from "../../states/UsbCopyUpdates/actions";
 import UpdatesTable from './UpdatesTable';
+import TabNav from '../../component/TabNavComponent';
 
 interface OrdersDetailProps {
   selectedOrderData: any | null;
@@ -22,6 +23,7 @@ function OrdersDetail({selectedOrderData}: OrdersDetailProps) {
   const [expandedVersions, setExpandedVersions] = useState<Record<string, boolean>>({});
   const [selectedSection, setSelectedSection] = useState<'Window' | 'Mac' | null>('Window');
   const [selectedVersionNum, setSelectedVersionNum] = useState(1);
+  const [activeTab, setActiveTab] = useState<String>('versions');
 
   // Simulating data fetch - replace with actual API call
 
@@ -200,7 +202,12 @@ function OrdersDetail({selectedOrderData}: OrdersDetailProps) {
         {/* <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">Updates</h3> */}
 
         <div className="mb-4 ms-4 border-b border-gray-200 dark:border-gray-700 pb-4">
-          <UpdatesTable updates={updates.data} section={selectedSection} versionNum={selectedVersionNum} deleteUpdate={deleteUpdate} />
+          <TabNav activeTab={activeTab} setActiveTab={setActiveTab} />
+          {activeTab =='versions' ?
+            <UpdatesTable updates={updates.data} section={selectedSection} versionNum={selectedVersionNum} deleteUpdate={deleteUpdate} />
+            : 
+            <></>
+          }
         </div>
       </div>
     </div>
