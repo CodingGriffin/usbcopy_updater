@@ -3,8 +3,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { ArrowLeft, Truck, Package, Palette, Database, ChevronDown, ChevronRight, Upload } from 'lucide-react';
 import { useNavigate, Outlet } from 'react-router-dom';
 import actions from "../../states/UsbCopyUpdates/actions";
-import UpdatesTable from './UpdatesTable';
 import TabNav from '../../component/TabNavComponent';
+import UpdatesTable from './UpdatesTable';
+import DiagnosticsTable from './DiagnosticsTable';
 
 interface OrdersDetailProps {
   selectedOrderData: any | null;
@@ -236,7 +237,7 @@ function OrdersDetail({selectedOrderData}: OrdersDetailProps) {
           {activeTab =='versions' ?
             <UpdatesTable updates={updates.data} section={selectedSection} versionNum={selectedVersionNum} deleteUpdate={deleteUpdate} />
             : 
-            <></>
+            <DiagnosticsTable diagnostics={diagnostics.data} section={selectedSection} versionNum={selectedVersionNum} />
           }
         </div>
       </div>
