@@ -13,6 +13,7 @@ interface DiagnosticsTableProps {
 function DiagnosticsTable({ diagnostics, section, versionNum }: DiagnosticsTableProps) {
   // Filter diagnostics where os_type matches section
   const [showUploadModal, setShowUploadModal] = useState(false);
+  const [selectedDiagnostic, setSelectedDiagnostic] = useState<any | null>(null);
   const url = new URL(window.location.href);
     
     // Use URLSearchParams to get the parameter value
@@ -22,16 +23,17 @@ function DiagnosticsTable({ diagnostics, section, versionNum }: DiagnosticsTable
     ? diagnostics?.filter(diagnostic => diagnostic.os_type === section)
     : diagnostics;
 
-  const host = import.meta.env.VITE_SERVER_BASE_URL;
-  const liveHost = `${window.location.protocol}//${window.location.host}/`;
-
-  const getFileName = (filePath: string) => {
-    return filePath.split('/').pop() || filePath;
-  };
-  
   const handleCloseWUploadModal = useCallback(() => {
     setShowUploadModal(false);
   }, []);
+
+  const handleRowClick = (diagnostic: any) => {
+    setSelectedDiagnostic(diagnostic);
+  };
+
+  const handleCloseDiagnosticModal = () => {
+    setSelectedDiagnostic(null);
+  };
 
   if (!filteredUpdates || filteredUpdates.length === 0) {
     return (
@@ -82,7 +84,11 @@ function DiagnosticsTable({ diagnostics, section, versionNum }: DiagnosticsTable
         </thead>
         <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
           {filteredUpdates.map((diagnostic, index) => (
-            <tr key={index} className="hover:bg-gray-50 dark:hover:bg-gray-700">
+            <tr
+              key={index}
+              className="hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer"
+              onClick={() => handleRowClick(diagnostic)}
+            >
               <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 dark:text-gray-100">
                 {diagnostic.name}
               </td>
@@ -109,6 +115,33 @@ function DiagnosticsTable({ diagnostics, section, versionNum }: DiagnosticsTable
         </tbody>
       </table>
       {showUploadModal && <UploadModal _closeUploadModal={handleCloseWUploadModal} />}
+
+      {/* Diagnostic Details Modal */}
+      {selectedDiagnostic && (
+        <Modal
+          open={!!selectedDiagnostic}
+          onCancel={handleCloseDiagnosticModal}
+          footer={null}
+          title="Diagnostic Details"
+        >
+          <div className="space-y-2">
+            <div><strong>Name :</strong> {selectedDiagnostic.name}</div>
+            <div><strong>Email :</strong> {selectedDiagnostic.email}</div>
+            <div><strong>Phone Number :</strong> {selectedDiagnostic.phone_num}</div>
+            <div><strong>Drive Source :</strong> {selectedDiagnostic.drive_source}</div>
+            <div><strong>OS :</strong> {selectedDiagnostic.os_type}</div>
+            <div><strong>Browser Info :</strong> {selectedDiagnostic.browser_info}</div>
+            <div><strong>VID :</strong> {selectedDiagnostic.vid}</div>
+            <div><strong>PID :</strong> {selectedDiagnostic.pid}</div>
+            <div><strong>Support Code :</strong> {selectedDiagnostic.serial_number}</div>
+            {selectedDiagnostic.issue_option && (
+              <div><strong>Topic :</strong> {selectedDiagnostic.issue_option}</div>
+            )}
+            <div><strong>Description :</strong> {selectedDiagnostic.issue_description}</div>
+            <div><strong>Posted Date :</strong> {selectedDiagnostic.formatted_timestamp}</div>
+          </div>
+        </Modal>
+      )}
     </div>
   );
 }
