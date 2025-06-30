@@ -106,7 +106,8 @@ export default function useUppy() {
           console.log('Response:', response);
           const sanitizedEntityName = entityName.replace(/\s+/g, '_');
           const sanitizedFileName = file.name.replace(/\s+/g, '_');
-          file_url = `https://usbcopypro.s3.amazonaws.com/${sanitizedEntityName}/V${verNum}/${osType}/${sanitizedFileName}`;       
+          file_url = `https://usbcopypro.s3.amazonaws.com/${sanitizedEntityName}/V${verNum}/${osType}/${sanitizedFileName}`;
+          object_key = `${sanitizedEntityName}/V${verNum}/${osType}/${sanitizedFileName}`       
           // const fileUrl = response.uploadURL;
           // setFiles(prev => [...prev, {name: file.name, url: fileUrl}]);
         };
@@ -125,7 +126,7 @@ export default function useUppy() {
               job_num: job?.job_number, // Adjust this based on how you want to get the job number
               ver_num: verNum,
               os_type: osType,
-              file_url: file_url,
+              object_key: object_key,
             }
           });
 
