@@ -19,7 +19,7 @@ const TabNav = React.memo(({activeTab, setActiveTab}: TabNavProps) => {
           } flex items-center px-6 py-4 border-b-2 font-medium text-sm`}
         >
           <Rocket className="w-5 h-5 mr-2" />
-          Versions
+          Files
         </button>
         <button
           onClick={() => setActiveTab('diagnostics')}
