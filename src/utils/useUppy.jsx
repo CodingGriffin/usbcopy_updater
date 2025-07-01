@@ -88,6 +88,7 @@ export default function useUppy() {
 
       useEffect(() => {
         let file_url = "";
+        let object_key = "";
         const fileAddedHandler = (file) => {
           console.log("Added file name: ", file.name, file.meta.relativePath);
           const sanitizedEntityName = entityName.replace(/\s+/g, '_');
