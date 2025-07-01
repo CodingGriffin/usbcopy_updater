@@ -104,12 +104,12 @@ function UpdatesTable({ updates, section, versionNum, deleteUpdate }: UpdatesTab
             <tr key={index} className="hover:bg-gray-50 dark:hover:bg-gray-700">
               <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 dark:text-gray-100">
                 <a 
-                  href={`${update.file_url}`} 
+                  href={`${update.object_key}`} 
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300"
                 >
-                  {getFileName(update.file_url)}
+                  {getFileName(update.object_key)}
                 </a>
               </td>
               <td className="whitespace-nowrap px-3 py-4 text-sm">
@@ -122,7 +122,7 @@ function UpdatesTable({ updates, section, versionNum, deleteUpdate }: UpdatesTab
               </td>
               <td className="whitespace-nowrap px-3 py-4 text-sm">
                 <button
-                  onClick={() => handleDeleteUpdate(update.id, getFileName(update.file_url))}
+                  onClick={() => handleDeleteUpdate(update.id, getFileName(update.object_key))}
                   className=" px-4 py-2 rounded-md bg-red-600 hover:bg-red-700 text-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-600 transition-all duration-200 flex items-center gap-1"
                 >
                   <Trash2 size={16} />
