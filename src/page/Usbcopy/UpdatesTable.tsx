@@ -79,6 +79,9 @@ function UpdatesTable({ updates, section, versionNum, deleteUpdate }: UpdatesTab
             <th scope="col-2" className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 dark:text-gray-100">
               File
             </th>
+            <th scope="col-2" className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 dark:text-gray-100">
+              Name
+            </th>
             <th scope="col-2" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-gray-100">
               Status
             </th>
@@ -111,6 +114,9 @@ function UpdatesTable({ updates, section, versionNum, deleteUpdate }: UpdatesTab
                 >
                   {getFileName(update.object_key)}
                 </a>
+              </td>
+              <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 dark:text-gray-100">
+                {update.name}
               </td>
               <td className="whitespace-nowrap px-3 py-4 text-sm">
                 <span className="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-800 dark:text-blue-100">
