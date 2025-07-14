@@ -10,8 +10,8 @@ import Dropbox from '@uppy/dropbox';
 
 import actions from "../states/UsbCopyUpdates/actions";
 
-import '@uppy/core/dist/style.min.css'
-import '@uppy/dashboard/dist/style.min.css'
+// import '@uppy/core/dist/style.min.css'
+// import '@uppy/dashboard/dist/style.min.css'
 
 const endPoint= "https://everyusb.click/usbcopypro-s3-uploads"
 const companionUrl = "http://localhost:3020/companion";
