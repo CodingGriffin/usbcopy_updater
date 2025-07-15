@@ -133,10 +133,12 @@ function DiagnosticsTable({ diagnostics, section, versionNum }: DiagnosticsTable
             <div><strong>Browser Info :</strong> {selectedDiagnostic.browser_info}</div>
             <div><strong>VID :</strong> {selectedDiagnostic.vid}</div>
             <div><strong>PID :</strong> {selectedDiagnostic.pid}</div>
-            <div><strong>Support Code :</strong> {selectedDiagnostic.serial_number}</div>
+            <div><strong>Serial Number :</strong> {selectedDiagnostic.serial_number}</div>
             {selectedDiagnostic.issue_option && (
               <div><strong>Topic :</strong> {selectedDiagnostic.issue_option}</div>
             )}
+            <div><strong>Red Screen :</strong> {selectedDiagnostic.red_screen}</div>
+            <div><strong>Support Code :</strong> {selectedDiagnostic.support_code}</div>
             <div><strong>Description :</strong> {selectedDiagnostic.issue_description}</div>
             <div><strong>Posted Date :</strong> {selectedDiagnostic.formatted_timestamp}</div>
           </div>
