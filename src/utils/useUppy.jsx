@@ -46,6 +46,7 @@ export default function useUppy() {
     // Use URLSearchParams to get the parameter value
   const osType = url.searchParams.get('os_type');
   const verNum = url.searchParams.get('ver_num');
+  const file_name = url.searchParams.get('file_name');
   // Get entity_name and version_name from Redux state
   
   // Find the version name that matches the current version_id
@@ -124,6 +125,7 @@ export default function useUppy() {
             type: actions.ADD_UPDATE,
             payload: {
               mode: "insertUpdates",
+              name: file_name,
               job_num: job?.job_number, // Adjust this based on how you want to get the job number
               ver_num: verNum,
               os_type: osType,

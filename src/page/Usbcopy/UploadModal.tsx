@@ -22,12 +22,6 @@ const UploadModal = React.memo(({ _closeUploadModal }: UploadModalProps) => {
     window.history.pushState({}, '', url);
   }
 
-  const setDiagSerialNumber = (number: String) => {
-    const url = new URL(window.location.href);
-    url.searchParams.set('diag_serial_number', String(number));
-    window.history.pushState({}, '', url);
-  }
-
   const handleDrag = (e: React.DragEvent) => {
     e.preventDefault();
     e.stopPropagation();
@@ -87,8 +81,7 @@ const UploadModal = React.memo(({ _closeUploadModal }: UploadModalProps) => {
           <div className="mb-8">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* File Name Input */}
-              <div className="group">
-                <label className="block text-sm font-semibold text-gray-800 dark:text-gray-200 mb-3 transition-colors duration-200">
+                <label className=" font-semibold text-gray-800 dark:text-gray-200 ml-3 transition-colors duration-200">
                   File Name
                   <span className="text-red-500 ml-1">*</span>
                 </label>
@@ -103,24 +96,6 @@ const UploadModal = React.memo(({ _closeUploadModal }: UploadModalProps) => {
                   />
                   <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-blue-500 to-purple-600 opacity-0 group-hover:opacity-5 transition-opacity duration-300 pointer-events-none"></div>
                 </div>
-              </div>
-
-              {/* Diagnostic Serial Number Input */}
-              <div className="group">
-                <label className="block text-sm font-semibold text-gray-800 dark:text-gray-200 mb-3 transition-colors duration-200">
-                  Diagnostic Serial Number
-                </label>
-                <div className="relative">
-                  <input
-                    type="text"
-                    name="diagSerialNumber"
-                    onChange={(e) => setDiagSerialNumber(e.target.value)}
-                    placeholder="Enter serial number..."
-                    className="w-full px-4 py-3 text-sm bg-white dark:bg-gray-700 border-2 border-gray-200 dark:border-gray-600 rounded-xl shadow-sm transition-all duration-300 ease-in-out focus:border-purple-500 focus:ring-4 focus:ring-purple-100 dark:focus:ring-purple-900 focus:outline-none hover:border-gray-300 dark:hover:border-gray-500 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500"
-                  />
-                  <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-purple-500 to-pink-600 opacity-0 group-hover:opacity-5 transition-opacity duration-300 pointer-events-none"></div>
-                </div>
-              </div>
             </div>
 
             {/* Decorative separator */}
