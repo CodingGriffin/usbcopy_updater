@@ -13,7 +13,7 @@ import {
 
 function* getUpdates(action: any) {
   try {
-    const response: any = yield* callApi(postRequestNoToken, "j/inc/class/class.usbCopyPro.php", {...action.payload});
+    const response: any = yield* callApi(postRequestNoToken, "j/inc/class/class.usbCopyProAdmin.php", {...action.payload});
     yield put({ type: actions.GET_UPDATES_SUCCESS, payload: response });
   } catch (error) {
     yield put({ type: actions.GET_UPDATES_FAILURE, payload: error });
@@ -22,7 +22,7 @@ function* getUpdates(action: any) {
 
 function* addUpdate(action: any) {
   try {
-    const response: any = yield* callApi(postRequestNoToken, "j/inc/class/class.usbCopyPro.php", {...action.payload});
+    const response: any = yield* callApi(postRequestNoToken, "j/inc/class/class.usbCopyProAdmin.php", {...action.payload});
     yield put({ type: actions.ADD_UPDATE_SUCCESS, payload: response });
   } catch (error) {
     yield put({ type: actions.ADD_UPDATE_FAILURE, payload: error });
@@ -31,7 +31,7 @@ function* addUpdate(action: any) {
 
 function* deleteUpdate(action: any) {
   try {
-    const response: any = yield* callApi(postRequestNoToken, "j/inc/class/class.usbCopyPro.php", {...action.payload});
+    const response: any = yield* callApi(postRequestNoToken, "j/inc/class/class.usbCopyProAdmin.php", {...action.payload});
     yield put({ type: actions.DELETE_UPDATE_SUCCESS, payload: response });
   } catch (error) {
     yield put({ type: actions.DELETE_UPDATE_FAILURE, payload: error });
@@ -40,7 +40,7 @@ function* deleteUpdate(action: any) {
 
 function* getDiagnostics(action: any) {
   try {
-    const response: any = yield* callApi(postRequestNoToken, "j/inc/class/class.usbCopyPro.php", {...action.payload});
+    const response: any = yield* callApi(postRequestNoToken, "j/inc/class/class.usbCopyProAdmin.php", {...action.payload});
     yield put({ type: actions.GET_DIAGNOSTICS_SUCCESS, payload: response });
   } catch (error) {
     yield put({ type: actions.GET_DIAGNOSTICS_FAILURE, payload: error });
