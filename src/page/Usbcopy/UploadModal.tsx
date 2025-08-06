@@ -79,7 +79,7 @@ const UploadModal = React.memo(({ _closeUploadModal }: UploadModalProps) => {
           </div>
           {/* Enhanced Form Section */}
           <div className="mb-8">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
               {/* File Name Input */}
                 <label className=" font-semibold text-gray-800 dark:text-gray-200 ml-3 transition-colors duration-200">
                   File Name
@@ -97,7 +97,38 @@ const UploadModal = React.memo(({ _closeUploadModal }: UploadModalProps) => {
                   <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-blue-500 to-purple-600 opacity-0 group-hover:opacity-5 transition-opacity duration-300 pointer-events-none"></div>
                 </div>
             </div>
-
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="relative">
+                <label className=" font-semibold text-gray-800 dark:text-gray-200 ml-3 transition-colors duration-200">
+                  Job Number
+                  <span className="text-red-500 ml-1">*</span>
+                </label>
+                <input
+                  required
+                  type="number"
+                  name="jobNum"
+                  onChange={(e) => setFileName(e.target.value)}
+                  placeholder="Enter Job Number..."
+                  className="w-full px-4 py-3 text-sm bg-white dark:bg-gray-700 border-2 border-gray-200 dark:border-gray-600 rounded-xl shadow-sm transition-all duration-300 ease-in-out focus:border-blue-500 focus:ring-4 focus:ring-blue-100 dark:focus:ring-blue-900 focus:outline-none hover:border-gray-300 dark:hover:border-gray-500 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500"
+                />
+                <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-blue-500 to-purple-600 opacity-0 group-hover:opacity-5 transition-opacity duration-300 pointer-events-none"></div>
+              </div>
+              <div className="relative">
+                <label className=" font-semibold text-gray-800 dark:text-gray-200 ml-3 transition-colors duration-200">
+                  Version Number
+                  <span className="text-red-500 ml-1">*</span>
+                </label>
+                <input
+                  required
+                  type="number"
+                  name="verNum"
+                  onChange={(e) => setFileName(e.target.value)}
+                  placeholder="Enter Version Number..."
+                  className="w-full px-4 py-3 text-sm bg-white dark:bg-gray-700 border-2 border-gray-200 dark:border-gray-600 rounded-xl shadow-sm transition-all duration-300 ease-in-out focus:border-blue-500 focus:ring-4 focus:ring-blue-100 dark:focus:ring-blue-900 focus:outline-none hover:border-gray-300 dark:hover:border-gray-500 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500"
+                />
+                <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-blue-500 to-purple-600 opacity-0 group-hover:opacity-5 transition-opacity duration-300 pointer-events-none"></div>
+              </div>
+            </div>
             {/* Decorative separator */}
             <div className="mt-8 mb-6 flex items-center">
               <div className="flex-1 h-px bg-gradient-to-r from-transparent via-gray-300 dark:via-gray-600 to-transparent"></div>
