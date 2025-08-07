@@ -50,6 +50,6 @@ function* getDiagnostics(action: any) {
 export default function* rootSaga() {
   yield all([takeLatest(actions.GET_UPDATES, getUpdates)]);
   yield all([takeLatest(actions.ADD_UPDATE, addUpdate)]);
-  yield all([takeLatest(actions.ADD_UPDATE, deleteUpdate)]);
+  yield all([takeLatest(actions.DELETE_UPDATE, deleteUpdate)]);
   yield all([takeLatest(actions.GET_DIAGNOSTICS, getDiagnostics)]);
 }
