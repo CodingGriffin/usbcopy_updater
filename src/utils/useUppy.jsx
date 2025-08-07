@@ -34,8 +34,8 @@ function serialize(data) {
   return new URLSearchParams(serializeSubPart(null, data))
 }
 
-export default function useUppy() {
-  
+export default function useUppy(referenceJobs = []) {
+  console.log('referenceJobs ========================> ', referenceJobs)
   const [files, setFiles] = useState([]);
   const dispatch = useDispatch();
   const { order } = useSelector((state) => state.orders);
@@ -132,18 +132,19 @@ export default function useUppy() {
               ver_num: verNum,
               os_type: osType,
               object_key: object_key,
+              reference_jobs: referenceJobs, // Include reference jobs in the payload
             }
           });
 
-          await dispatch({
-            type: actions.GET_UPDATES,
-            payload: {
-              mode: "getUpdates",
-              job_num: job?.job_number,
-              ver_num: verNum,
-              os_type: osType,
-            }
-          });
+          // await dispatch({
+          //   type: actions.GET_UPDATES,
+          //   payload: {
+          //     mode: "getUpdates",
+          //     job_num: job?.job_number,
+          //     ver_num: verNum,
+          //     os_type: osType,
+          //   }
+          // });
           console.log('Upload complete! We have uploaded these files:', result);
         };
 
@@ -159,7 +160,7 @@ export default function useUppy() {
           uppy.off('complete', completeHandler);
           uppy.clear();
         };
-      }, []); // Add versionName to dependencies
+      }, [referenceJobs]); // Add referenceJobs to dependencies
 
     return { uppy, files };
   // })

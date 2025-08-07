@@ -8,14 +8,12 @@ interface UploadModalProps {
 }
 
 interface ReferenceJob {
-  id: string;
-  jobNumber: string;
-  versionNumber: string;
+  _id: string;
+  job_num: string;
+  ver_num: string;
 }
 
 const UploadModal = React.memo(({ _closeUploadModal }: UploadModalProps) => {
-
-  const { uppy } = useUppy();
 
   const [dragActive, setDragActive] = useState(false);
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
@@ -25,6 +23,8 @@ const UploadModal = React.memo(({ _closeUploadModal }: UploadModalProps) => {
   const [referenceJobs, setReferenceJobs] = useState<ReferenceJob[]>([]);
   const [jobNumber, setJobNumber] = useState('');
   const [versionNumber, setVersionNumber] = useState('');
+
+  const { uppy } = useUppy(referenceJobs);
 
   const setFileName = (name: String) => {
     console.log('file name ========================> ', name)
@@ -37,9 +37,9 @@ const UploadModal = React.memo(({ _closeUploadModal }: UploadModalProps) => {
   const addReferenceJob = () => {
     if (jobNumber.trim() && versionNumber.trim()) {
       const newJob: ReferenceJob = {
-        id: Date.now().toString(), // Simple ID generation
-        jobNumber: jobNumber.trim(),
-        versionNumber: versionNumber.trim()
+        _id: Date.now().toString(), // Simple ID generation
+        job_num: jobNumber.trim(),
+        ver_num: versionNumber.trim()
       };
       setReferenceJobs(prev => [...prev, newJob]);
       setJobNumber('');
@@ -48,7 +48,7 @@ const UploadModal = React.memo(({ _closeUploadModal }: UploadModalProps) => {
   };
 
   const deleteReferenceJob = (id: string) => {
-    setReferenceJobs(prev => prev.filter(job => job.id !== id));
+    setReferenceJobs(prev => prev.filter(job => job._id !== id));
   };
 
   const handleDrag = (e: React.DragEvent) => {
@@ -184,22 +184,22 @@ const UploadModal = React.memo(({ _closeUploadModal }: UploadModalProps) => {
                 <div className="space-y-3">
                   {referenceJobs.map((job) => (
                     <div
-                      key={job.id}
+                      key={job._id}
                       className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600"
                     >
                       <div className="flex items-center gap-4">
                         <div className="text-sm">
                           <span className="font-medium text-gray-700 dark:text-gray-300">
-                            Job: {job.jobNumber}
+                            Job: {job.job_num}
                           </span>
                           <span className="mx-2 text-gray-400">|</span>
                           <span className="font-medium text-gray-700 dark:text-gray-300">
-                            Version: {job.versionNumber}
+                            Version: {job.ver_num}
                           </span>
                         </div>
                       </div>
                       <button
-                        onClick={() => deleteReferenceJob(job.id)}
+                        onClick={() => deleteReferenceJob(job._id)}
                         className="p-2 text-red-500 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors duration-200"
                         title="Delete reference job"
                       >
