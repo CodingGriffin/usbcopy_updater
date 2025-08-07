@@ -160,7 +160,7 @@ export default function useUppy(referenceJobs = [], name = '') {
           uppy.off('complete', completeHandler);
           uppy.clear();
         };
-      }, [referenceJobs]); // Add referenceJobs to dependencies
+      }, [referenceJobs, name]); // Add referenceJobs to dependencies
 
     return { uppy, files };
   // })
