@@ -15,7 +15,9 @@ function UpdatesTable({ updates, section, versionNum, deleteUpdate }: UpdatesTab
   // Filter updates where os_type matches section
   const [showUploadModal, setShowUploadModal] = useState(false);
   const url = new URL(window.location.href);
-    
+  url.searchParams.set('diag_serial_number', '');
+  window.history.pushState({}, '', url);
+
     // Use URLSearchParams to get the parameter value
   console.log(url.searchParams.get('os_type'));
   console.log(url.searchParams.get('ver_num'));

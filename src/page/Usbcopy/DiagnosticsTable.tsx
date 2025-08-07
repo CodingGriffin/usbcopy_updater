@@ -39,7 +39,7 @@ function DiagnosticsTable({ diagnostics, section, versionNum }: DiagnosticsTable
   const handleRowSelect = (index: number) => {
     console.log(filteredUpdates[index])
     const url = new URL(window.location.href);
-    url.searchParams.set('diag_serial_number', filteredUpdates[index]?.support_code);
+    url.searchParams.set('diag_serial_number', filteredUpdates[index]?.identify_number);
     window.history.pushState({}, '', url);
     setSelectedRows(prev => {
       const newSet = new Set();

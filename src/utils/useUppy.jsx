@@ -34,7 +34,7 @@ function serialize(data) {
   return new URLSearchParams(serializeSubPart(null, data))
 }
 
-export default function useUppy(referenceJobs = []) {
+export default function useUppy(referenceJobs = [], name = '') {
   console.log('referenceJobs ========================> ', referenceJobs)
   const [files, setFiles] = useState([]);
   const dispatch = useDispatch();
@@ -46,7 +46,7 @@ export default function useUppy(referenceJobs = []) {
     // Use URLSearchParams to get the parameter value
   const osType = url.searchParams.get('os_type');
   const verNum = url.searchParams.get('ver_num');
-  const file_name = url.searchParams.get('file_name');
+  const file_name = name;
   const diag_serial_number = url.searchParams.get('diag_serial_number');
   // Get entity_name and version_name from Redux state
   

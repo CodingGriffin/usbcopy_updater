@@ -11,6 +11,6 @@ interface UppyHookResult {
   files: Array<{name: string, url: string}>;
 }
 
-declare function useUppy(referenceJobs?: ReferenceJob[]): UppyHookResult;
+declare function useUppy(referenceJobs?: ReferenceJob[], name?: string): UppyHookResult;
 
 export default useUppy;

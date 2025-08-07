@@ -23,11 +23,13 @@ const UploadModal = React.memo(({ _closeUploadModal }: UploadModalProps) => {
   const [referenceJobs, setReferenceJobs] = useState<ReferenceJob[]>([]);
   const [jobNumber, setJobNumber] = useState('');
   const [versionNumber, setVersionNumber] = useState('');
+  const [name, setName] = useState('');
 
-  const { uppy } = useUppy(referenceJobs);
+  const { uppy } = useUppy(referenceJobs, name);
 
   const setFileName = (name: String) => {
     console.log('file name ========================> ', name)
+    setName(String(name));
     const url = new URL(window.location.href);
     url.searchParams.set('file_name', String(name));
     window.history.pushState({}, '', url);
